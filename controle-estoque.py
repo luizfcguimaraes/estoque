@@ -1,5 +1,25 @@
 max_estoque = int(150)
 
+while True:
+    for c in range(1,4):
+        login = str(input('Usuário: '))
+        senha = str(input('Senha: '))
+        if login == 'admin' and senha == '@dmiN':
+            print('-='*10)
+            print('Login realizado com sucesso!')
+            print('-='*10)
+            break
+        else:
+            print('Usuário ou senha inválido')
+            print(f'Você tentou {c} vez(es). Limite: 3')
+            if c == 3:
+                print('-='*10)
+                print('Você tentou o máximo de vezes!')
+                print('Fechando programa por segurança')
+                print('-='*10)
+                exit()
+    break              
+    
 def cadastrar(lista):
     categoria = input('Digite a categoria do produto: ')
     nome = input('Digite o nome do produto: ')
@@ -25,7 +45,7 @@ def atualização(lista):
     nome = input("Digite o nome do produto a ser atualizado: ")
     for produto in lista:
         if produto["nome"] == nome:
-            opcao = input("Deseja atualizar a categoria, nome ou quantidade? (C/N/Q): ").upper()
+            opcao = input("Deseja atualizar a categoria, nome ou quantidade? (C/N/Q): ").strip().upper()[0]
             if opcao == "N":
                 novo_nome = input("Digite o novo nome do produto: ")
                 produto["nome"] = novo_nome
@@ -57,7 +77,7 @@ def relatorio(lista):
         print(f"Nome: {produto['nome']}")
         print(f"Quantidade: {produto['quantidade']}")
         print("------------------")
-
+        
 def quant_estoque(lista):
     print("Relatório de Produtos:")
     for categoria in lista:
@@ -67,6 +87,22 @@ def quant_estoque(lista):
         porcen = categoria["quantidade"]*100/max_estoque
         print('{:.2f}%'.format(porcen))
 
+def necessidade_estoque(lista):
+    print("Necessidades do sistema: ")
+    print('-='*20)
+    for produto in lista:
+        print()
+        print(f"Nome: {produto['nome']} do tipo {produto['categoria']}")
+        print(f"Quantidade: {produto['quantidade']}")
+        if produto['quantidade'] <= 10 :
+            print('-'*10)
+            print('Necessidade de realizar um novo pedido!')
+            print('-'*10)
+        else:
+            print('-'*10)
+            print('Não há necessidade de realizar um novo pedido!')
+            print('-'*10)
+            
 def menu_do_estoque():
     print()
     print("======= MENU - CONTROLE DE ESTOQUE ======")
@@ -75,10 +111,10 @@ def menu_do_estoque():
     print("3 - Atualizar Produto")
     print("4 - Excluir Produto")
     print("5 - Exibir Relatório de Produtos")
-    print("6 - Exibir Quantidade de Produtos Por Categoria ")
-    print("7 - Encerrar")
+    print("6 - Exibir Quantidade de Produtos Por Categoria")
+    print("7 - Necessidades do estoque")
+    print("8 - Encerrar")
     print()
-
 
 produtos = []
 
@@ -104,9 +140,11 @@ while True:
         print()
         quant_estoque(produtos)
     elif opcao == "7":
-        print("Terminando o programa")
+        print()
+        necessidade_estoque(produtos)
+    elif opcao == "8":
+        print("Terminando o programa...")
+        print('-='*10)
         break
     else:
         print("Inválido. Digite novamente.")
-
-
